@@ -20,10 +20,45 @@ This tutorial outlines the implementation of on-premises Active Directory within
 
 <h2>High-Level Deployment and Configuration Steps</h2>
 
-- Step 1
-- Step 2
-- Step 3
-- Step 4
+1. Plan Your Architecture
+VM Deployment: Create virtual machines in Azure that will run your domain controllers (DCs). These VMs should be of the appropriate size and configured with the necessary resources.
+Networking: Set up a Virtual Network (VNet) in Azure to ensure your domain controllers are on the same network for communication. You may also need to configure a VPN or ExpressRoute if you have an on-premises AD and wish to extend your AD across hybrid environments.
+Multiple Domain Controllers: To ensure high availability, you should deploy multiple domain controllers across different Availability Zones or regions.
+2. Deploy Virtual Machines in Azure
+In the Azure portal, create Windows Server VMs that will act as your Domain Controllers.
+Ensure that the VM sizes meet the requirements for your AD deployment, depending on the expected load.
+Set up Static IP Addresses for each domain controller to ensure stability.
+3. Set Up the Domain Controllers
+Install Active Directory Domain Services (AD DS) on the Windows Server VMs.
+Open Server Manager on the VM.
+Add the Active Directory Domain Services role.
+After installation, promote the server to a domain controller.
+Configure the domain controllers as per your on-premises AD setup, including creating necessary DNS records and ensuring Active Directory replication.
+You may replicate an existing on-premises AD or create a new AD forest/domain as required.
+4. Establish Network Connectivity (Hybrid)
+If you are extending an on-premises AD into Azure, you should configure hybrid connectivity between on-premises and Azure:
+Use VPN Gateway or ExpressRoute to connect the on-premises network to the Azure Virtual Network.
+Ensure DNS Resolution is properly configured between on-premises and Azure AD environments.
+If extending your on-premises domain, ensure that the domain controllers in Azure can contact your on-premises domain controllers for replication.
+If you're creating a new forest/domain in Azure, ensure proper network routing for AD communication.
+5. Configure Active Directory Replication (if applicable)
+For a hybrid environment, ensure that AD replication between on-premises and Azure AD DCs is functioning properly. You can configure Site-to-Site VPN or Azure AD Connect (if integrating with Azure AD) for seamless synchronization.
+Replicate necessary Active Directory data (users, groups, GPOs, etc.) between on-premises AD and the AD controllers running in Azure.
+6. Configure DNS and Global Catalogs
+Active Directory heavily relies on DNS. In Azure, configure DNS settings on your domain controllers to ensure correct name resolution.
+Ensure that you’ve set up the Global Catalog (GC) role on one or more domain controllers in Azure, which is essential for certain Active Directory queries across domains.
+7. Ensure High Availability and Disaster Recovery
+Ensure your domain controllers are distributed across multiple availability zones or regions to protect against failures.
+Implement backup and disaster recovery strategies for your domain controllers in Azure.
+8. Test the Environment
+After setting everything up, test the deployment to make sure replication works, and domain controllers can authenticate and authorize users as expected.
+Verify DNS resolution, GPO applications, and AD replication.
+9. Maintain and Monitor
+Implement monitoring using Azure Monitor, Log Analytics, and Azure Security Center to monitor the health of your domain controllers.
+Regularly update your VMs and domain controllers with the latest patches and security updates.
+10. Integrating with Azure AD (Optional)
+If you want to integrate your on-premises AD with Azure AD, you can use Azure AD Connect to synchronize identities and provide a hybrid identity solution.
+Azure AD Connect can sync users and groups from your on-prem AD to Azure AD, allowing you to have a unified login experience.
 
 <h2>Deployment and Configuration Steps</h2>
 
